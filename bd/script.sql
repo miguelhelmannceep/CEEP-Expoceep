@@ -1,27 +1,19 @@
--- ============================================================
--- PROJETO CEEP+ - SCRIPT DE CRIAÇÃO DO BANCO DE DADOS
--- ETAPA 1: MODELAGEM RELACIONAL
--- ============================================================
-
--- 1. Tabela de Turmas
 CREATE TABLE turmas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome_turma VARCHAR(50) NOT NULL, -- Ex: "3ª Série C"
-    curso VARCHAR(100) NOT NULL     -- Ex: "Desenvolvimento de Sistemas"
+    nome_turma VARCHAR(50) NOT NULL,
+    curso VARCHAR(100) NOT NULL   
 );
 
--- 2. Tabela de Usuários (Alunos, Coordenação, Direção, Cantina)
 CREATE TABLE usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL, -- Login institucional
-    senha VARCHAR(255) NOT NULL,        -- Hash da senha
+    email VARCHAR(100) UNIQUE NOT NULL, 
+    senha VARCHAR(255) NOT NULL,     
     perfil VARCHAR(20) NOT NULL CHECK (perfil IN ('Aluno', 'Coordenacao', 'Direcao', 'Cantina')),
     turma_id INTEGER,
     FOREIGN KEY (turma_id) REFERENCES turmas(id)
 );
 
--- 3. Tabela de Avisos e Comunicados Oficiais
 CREATE TABLE avisos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titulo VARCHAR(150) NOT NULL,
@@ -31,7 +23,6 @@ CREATE TABLE avisos (
     FOREIGN KEY (autor_id) REFERENCES usuarios(id)
 );
 
--- 4. Tabela de Bloco de Anotações / Tarefas do Aluno
 CREATE TABLE anotacoes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titulo VARCHAR(100) NOT NULL,
@@ -41,10 +32,9 @@ CREATE TABLE anotacoes (
     FOREIGN KEY (aluno_id) REFERENCES usuarios(id)
 );
 
--- 5. Tabela de Horários e Disciplinas por Turma
 CREATE TABLE horarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    dia_semana VARCHAR(15) NOT NULL, -- Ex: "Segunda-feira"
+    dia_semana VARCHAR(15) NOT NULL,
     horario_inicio TIME NOT NULL,
     horario_fim TIME NOT NULL,
     disciplina VARCHAR(100) NOT NULL,
@@ -53,7 +43,6 @@ CREATE TABLE horarios (
     FOREIGN KEY (turma_id) REFERENCES turmas(id)
 );
 
--- 6. Tabela de Produtos da Cantina
 CREATE TABLE produtos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome VARCHAR(100) NOT NULL,
@@ -63,14 +52,12 @@ CREATE TABLE produtos (
     foto_url VARCHAR(255)
 );
 
--- 7. Tabela do Cardápio do Dia
 CREATE TABLE cardapio (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     data_cardapio DATE NOT NULL,
     refeicao_descricao TEXT NOT NULL
 );
 
--- 8. Tabela de Pesquisa de Demanda / Votação de Refeições
 CREATE TABLE votos_demanda (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     data_voto DATE NOT NULL,
@@ -79,7 +66,6 @@ CREATE TABLE votos_demanda (
     FOREIGN KEY (aluno_id) REFERENCES usuarios(id)
 );
 
--- 9. Tabela de Pedidos e Fichas Digitais (QR Code / PIX)
 CREATE TABLE pedidos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     aluno_id INTEGER NOT NULL,
